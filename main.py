@@ -1,8 +1,9 @@
 #!/usr/bin/env python
 
 import os
-
 from flask import Flask, request, send_from_directory
+import json
+import lambda1.lambda1
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
@@ -28,6 +29,9 @@ def send_js(path):
 def send_root(path):
     return send_from_directory('html', path)
 
+@app.route('/v1/getTemp')
+def send_getTemp():
+    return json.dumps(lambda1.lambda1.getTemp())
 
 
 
