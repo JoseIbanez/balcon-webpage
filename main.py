@@ -33,6 +33,9 @@ def send_root(path):
 def send_getTemp():
     return json.dumps(lambda1.lambda1.getTemp())
 
+@app.route('/v1/getHistogram')
+def send_getHistogram():
+    return json.dumps(lambda1.lambda1.getHistogram())
 
 
 

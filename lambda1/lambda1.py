@@ -82,3 +82,57 @@ def getTemp():
 
     return out
 
+
+
+def getHistogram():
+
+    probe = "b827eb.300520.c3"
+    hours = 48
+
+    lastDate = datetime.today()
+    lastDate = lastDate + timedelta(hours=24)
+    initialDate = lastDate - timedelta(hours=hours)
+
+
+    dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
+    table = dynamodb.Table('temp')
+
+
+    print("reading last values")
+    print(initialDate.strftime("%Y-%m-%d"))
+    print(lastDate.strftime("%Y-%m-%d"))
+
+    response = table.query(
+        ProjectionExpression="probe, #date, #temp, humidity, mois, batt",
+        ExpressionAttributeNames={"#date": "date", "#temp": "temp"},
+        KeyConditionExpression=Key('probe').eq(probe) &
+                               Key('date').between(initialDate.strftime("%Y-%m-%d"),
+                                                   lastDate.strftime("%Y-%m-%d"))
+    )
+
+
+    #print(response[u'Items'])
+    #print("-------------------------------------")
+
+    list=[]
+
+    for i in response[u'Items']:
+        #print(json.dumps(i, cls=DecimalEncoder))
+        item = { "date": i['date'] }
+
+        if 'temp' in i.keys():
+            item['temp'] = float(i['temp'])/1000
+
+
+        if 'humidity' in i.keys():
+            item['humidity'] = float(i['humidity'])/1000
+
+
+        #print(item)   
+
+        list.append(item)
+
+
+    out = { "probe": probe, "data": list }
+
+    return out
