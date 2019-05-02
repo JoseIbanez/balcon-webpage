@@ -84,14 +84,10 @@ def getTemp():
 
 
 
-def getHistogram():
+def getHistogram(probe="b827eb.300520.c3",hours=48,param="temp"):
 
-    probe = "b827eb.300520.c3"
-    hours = 48
-
-    lastDate = datetime.today()
-    lastDate = lastDate + timedelta(hours=24)
-    initialDate = lastDate - timedelta(hours=hours)
+    lastDate =    datetime.today() + timedelta(hours=24)
+    initialDate = datetime.today() - timedelta(hours=hours)
 
 
     dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
@@ -99,15 +95,15 @@ def getHistogram():
 
 
     print("reading last values")
-    print(initialDate.strftime("%Y-%m-%d"))
-    print(lastDate.strftime("%Y-%m-%d"))
+    print("From: "+initialDate.strftime("%Y-%m-%d %H:%M"))
+    print("To:   "+lastDate.strftime("%Y-%m-%d %H:%M"))
 
     response = table.query(
         ProjectionExpression="probe, #date, #temp, humidity, mois, batt",
         ExpressionAttributeNames={"#date": "date", "#temp": "temp"},
         KeyConditionExpression=Key('probe').eq(probe) &
-                               Key('date').between(initialDate.strftime("%Y-%m-%d"),
-                                                   lastDate.strftime("%Y-%m-%d"))
+                               Key('date').between(initialDate.strftime("%Y-%m-%d %H:%M"),
+                                                   lastDate.strftime("%Y-%m-%d %H:%M"))
     )
 
 
@@ -118,19 +114,18 @@ def getHistogram():
 
     for i in response[u'Items']:
         #print(json.dumps(i, cls=DecimalEncoder))
-        item = { "date": i['date'] }
 
-        if 'temp' in i.keys():
-            item['temp'] = float(i['temp'])/1000
+        if param in i.keys():
 
+            item = { "date" : i['date'] }
 
-        if 'humidity' in i.keys():
-            item['humidity'] = float(i['humidity'])/1000
-
-
-        #print(item)   
-
-        list.append(item)
+            if param == 'temp' or param == 'humidity':
+                value = float(i[param])/1000
+            else:
+                value = float(i[param])
+            
+            item[param]=value
+            list.append(item)
 
 
     out = { "probe": probe, "data": list }

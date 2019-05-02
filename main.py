@@ -35,7 +35,23 @@ def send_getTemp():
 
 @app.route('/v1/getHistogram')
 def send_getHistogram():
-    return json.dumps(lambda1.lambda1.getHistogram())
+    if request.args.get('probe'):
+        probe = request.args.get('probe')
+    else:
+        probe = "ESP807D3AF077C8.A9"
+
+    if request.args.get('hours'):
+        hours = int(request.args.get('hours'))
+    else:
+        hours = 48
+
+    if request.args.get('param'):
+        param = request.args.get('param')
+    else:
+        param = 'batt'
+
+    print(probe, hours, param)
+    return json.dumps(lambda1.lambda1.getHistogram(probe=probe,hours=hours,param=param))
 
 
 

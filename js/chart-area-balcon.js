@@ -21,14 +21,16 @@ function newDateString(days) {
 function drawChart(charData) {
 
   document.getElementById("charTitle").innerHTML = charData.title;
-  document.getElementById("charComment").innerHTML = charData.comment;
+  document.getElementById("charComment").innerHTML = charData.description;
 
   var label = [];
   var data = [];
+  var param = charData.param;
+
   charData.data.forEach(function(element) {
     console.log(element);
     label.push(element.date);
-    data.push(element.temp);
+    data.push(element[param]);
   });
 
   var config = {
@@ -75,17 +77,69 @@ function drawChart(charData) {
 };
 
 
-//var charDataString = document.getElementById("charData").innerHTML;
-//var charData = JSON.parse(charDataString);
+function updateChart(probeData) {
+  
+  //var probeDataString = document.getElementById("probeData").innerHTML;
+  //var probeData = JSON.parse(probeDataString);
 
-$.ajax({
-  dataType: "json",
-  url: "v1/getHistogram",
-  data: null,
-  success: function(data) {
-    //document.getElementById("charData").innerHTML = JSON.stringify(data);
-    data.title = "remote";
-    data.description = "some comment";
-    drawChart(data);
+  requestParam = { "probe": probeData.probe,
+                   "param": probeData.param
+                 }
+
+  $.ajax({
+    dataType: "json",
+    url: "v1/getHistogram",
+    data: requestParam,
+    success: function(data) {
+      //document.getElementById("charData").innerHTML = JSON.stringify(data);
+      data.title = probeData.title;
+      data.description = probeData.description;
+      data.param = probeData.param;
+      drawChart(data);
+    }
+  });
+
+};
+
+probeList = {
+  "romeroBatt" : {
+    "probe": "ESP807D3AF077C8.A9",
+    "alias": "romeroBatt",
+    "title": "Romero",
+    "description": "Lolin D32 - 3.7Volt",
+    "param": "batt"
+  },
+  "kentiaBatt" : {
+    "probe": "ESP807D3AF077C8.A9",
+    "alias": "kentiaBatt",
+    "title": "Kentia",
+    "description": "Lolin D32 - 3.7Volt",
+    "param": "batt"
+  },
+  "balconTemp" : {
+    "probe": "b827eb.61eb84.c2",
+    "alias": "balconTemp",
+    "title": "28039 - Outdoor Temp",
+    "description": "Oregon Scientific",
+    "param": "temp"
+  },
+  "bedroomTemp" : {
+    "probe": "b827eb.61eb84.c3",
+    "alias": "bedroomTemp",
+    "title": "28039 - Bedroom",
+    "description": "Oregon Scientific",
+    "param": "temp"
+  },
+  "siguenzaTemp" : {
+    "probe": "b827eb.300520.c3",
+    "alias": "siguenzaTemp",
+    "title": "19250 - Out Temp",
+    "description": "Oregon Scientific",
+    "param": "temp"
   }
-});
+};
+
+function probeSelector(alias) {
+  probeData = probeList[alias]; 
+  updateChart(probeData);
+};
