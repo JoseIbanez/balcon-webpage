@@ -83,7 +83,8 @@ function updateChart(probeData) {
   //var probeData = JSON.parse(probeDataString);
 
   requestParam = { "probe": probeData.probe,
-                   "param": probeData.param
+                   "param": probeData.param,
+                   "hours": 48
                  }
 
   $.ajax({

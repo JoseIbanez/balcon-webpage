@@ -15,7 +15,7 @@ def send_index():
 
 @app.route('/sb/<path:path>')
 def send_sb(path):
-    return send_from_directory('sb', path)
+    return send_from_directory('startbootstrap-sb-admin-2-gh-pages', path)
 
 @app.route('/vendor/<path:path>')
 def send_vendor(path):
