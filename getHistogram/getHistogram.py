@@ -23,65 +23,29 @@ class DecimalEncoder(json.JSONEncoder):
 
 def lambda_handler(event, context):
     logger.info('got event{}'.format(event))
-    ret = getTemp()
+
+    probe = safeget(event, 'queryStringParameters', 'probe')
+    hours = int(safeget(event, 'queryStringParameters', 'hours'))
+    param = safeget(event, 'queryStringParameters', 'param')
+
+
+    logger.info('hours: {}, probe: {}, param: {}'.format( hours, probe, param ))
+
+    ret = getHistogram(probe=probe, hours=hours, param=param)
 
     return {
         "statusCode": 200,
         "body": json.dumps(ret)
     }
 
-def getTemp():
 
-    probe = "b827eb.300520.c3"
-    hours = 48
-
-    lastDate = datetime.today()
-    lastDate = lastDate + timedelta(hours=24)
-    initialDate = lastDate - timedelta(hours=hours)
-
-
-
-    dynamodb = boto3.resource('dynamodb', region_name='eu-west-1')
-    table = dynamodb.Table('temp')
-
-    print("reading last values")
-    print(initialDate.strftime("%Y-%m-%d"))
-    print(lastDate.strftime("%Y-%m-%d"))
-
-    response = table.query(
-        ProjectionExpression="probe, #date, #temp, humidity",
-        ExpressionAttributeNames={"#date": "date", "#temp": "temp"},
-        KeyConditionExpression=Key('probe').eq(probe) &
-                               Key('date').between(initialDate.strftime("%Y-%m-%d"),
-                                                   lastDate.strftime("%Y-%m-%d"))
-    )
-
-
-    #print response[u'Items']
-
-    #print "-------------------------------------"
-
-    list=[]
-
-    for i in response[u'Items']:
-        #print(json.dumps(i, cls=DecimalEncoder))
-        if 'humidity' in i.keys():
-            #print i['date']+','+i['probe']+','+str(i['temp'])+','+str(i['humidity'])
-            item = { "date": i['date'],
-                     "temp": int(i['temp']),
-                     "humidity": int(i['humidity']) }
-        else:
-            #print i['date']+','+i['probe']+','+str(i['temp'])+',None'
-            item = { "date": i['date'],
-                     "temp": int(i['temp']) }
-
-        list.append(item)
-
-
-    out = { "probe": probe, "data": list }
-
-    return out
-
+def safeget(dct, *keys):
+    for key in keys:
+        try:
+            dct = dct[key]
+        except KeyError:
+            return None
+    return dct
 
 
 def getHistogram(probe="b827eb.300520.c3",hours=48,param="temp"):

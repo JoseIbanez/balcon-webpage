@@ -3,7 +3,7 @@
 import os
 from flask import Flask, request, send_from_directory
 import json
-import lambda1.lambda1
+import getHistogram.getHistogram
 
 # set the project root directory as the static folder, you can set others.
 app = Flask(__name__, static_url_path='')
@@ -51,7 +51,7 @@ def send_getHistogram():
         param = 'batt'
 
     print(probe, hours, param)
-    return json.dumps(lambda1.lambda1.getHistogram(probe=probe,hours=hours,param=param))
+    return json.dumps(getHistogram.getHistogram.getHistogram(probe=probe,hours=hours,param=param))
 
 
 
