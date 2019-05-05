@@ -6,12 +6,13 @@ import json
 import getHistogram.getHistogram
 
 # set the project root directory as the static folder, you can set others.
-app = Flask(__name__, static_url_path='')
+app = Flask(__name__, static_url_path='/html')
 
 @app.route('/index.html')
 @app.route('/')
 def send_index():
     return send_from_directory('html', "index.html")
+
 
 @app.route('/sb/<path:path>')
 def send_sb(path):
@@ -19,7 +20,7 @@ def send_sb(path):
 
 @app.route('/vendor/<path:path>')
 def send_vendor(path):
-    return send_from_directory('sb/vendor', path)
+    return send_from_directory('vendor', path)
 
 @app.route('/js/<path:path>')
 def send_js(path):
@@ -27,6 +28,7 @@ def send_js(path):
 
 @app.route('/<path:path>')
 def send_root(path):
+    print("root")
     return send_from_directory('html', path)
 
 @app.route('/v1/getTemp')
