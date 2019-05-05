@@ -49,7 +49,7 @@ var myLineChart = new Chart(ctx, {
         type: 'time',
         time: {
           parser: timeFormat,
-          tooltipFormat: 'll'
+          tooltipFormat: 'MMM D HH:mm'
         },
         gridLines: {
           display: false,
