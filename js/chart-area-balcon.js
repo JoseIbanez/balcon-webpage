@@ -1,146 +1,133 @@
 // Set new default font family and font color to mimic Bootstrap's default styling
-Chart.defaults.global.defaultFontFamily = '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
-Chart.defaults.global.defaultFontColor = '#292b2c';
-
-// Area Chart Example
+Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
+Chart.defaults.global.defaultFontColor = '#858796';
 
 
+
+myData = [
+  {x: "2019-04-30 10:11", y: 176}, 
+  {x: "2019-04-30 15:20", y: 175}, 
+  {x: "2019-04-30 19:20", y: 170.8}, 
+  {x: "2019-05-01 15:20", y: 180.2}
+];
 
 var timeFormat = 'YYYY-MM-DD HH:mm';
-var color = Chart.helpers.color;
 
-function newDate(days) {
-  return moment().add(days, 'd').toDate();
-}
-
-function newDateString(days) {
-  return moment().add(days, 'd').format(timeFormat);
-}
-
-
-function drawChart(charData) {
-
-  document.getElementById("charTitle").innerHTML = charData.title;
-  document.getElementById("charComment").innerHTML = charData.description;
-
-  var label = [];
-  var data = [];
-  var param = charData.param;
-
-  charData.data.forEach(function(element) {
-    console.log(element);
-    label.push(element.date);
-    data.push(element[param]);
-  });
-
-  var config = {
-    type: 'line',
-    data: {
-      labels: label,
-      datasets: [{
-        label: charData.title,
-        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-        borderColor: window.chartColors.red,
-        fill: false,
-        data: data,
+// Area Chart Example
+var ctx = document.getElementById("myAreaChart");
+var myLineChart = new Chart(ctx, {
+  type: 'line',
+  data: {
+    datasets: [{
+      label: "Demo",
+      lineTension: 0.3,
+      backgroundColor: "rgba(78, 115, 223, 0.05)",
+      borderColor: "rgba(78, 115, 223, 1)",
+      pointRadius: 1,
+      pointBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointBorderColor: "rgba(78, 115, 223, 1)",
+      pointHoverRadius: 3,
+      pointHoverBackgroundColor: "rgba(78, 115, 223, 1)",
+      pointHoverBorderColor: "rgba(78, 115, 223, 1)",
+      pointHitRadius: 10,
+      pointBorderWidth: 2,
+      data: myData
+    }],
+  },
+  options: {
+    maintainAspectRatio: false,
+    layout: {
+      padding: {
+        left: 10,
+        right: 25,
+        top: 25,
+        bottom: 0
+      }
+    },
+    scales: {
+      xAxes: [{
+        type: 'time',
+        time: {
+          parser: timeFormat,
+          tooltipFormat: 'll'
+        },
+        gridLines: {
+          display: false,
+          drawBorder: false
+        },
+        ticks: {
+          maxTicksLimit: 7
+        }
+      }],
+      yAxes: [{
+        ticks: {
+          maxTicksLimit: 5,
+          padding: 10
+        },
+        gridLines: {
+          color: "rgb(234, 236, 244)",
+          zeroLineColor: "rgb(234, 236, 244)",
+          drawBorder: false,
+          borderDash: [2],
+          zeroLineBorderDash: [2]
+        }
       }],
     },
-    options: {
-      title: {
-        text: charData.title
-      },
-      scales: {
-        xAxes: [{
-          type: 'time',
-          time: {
-            parser: timeFormat,
-            // round: 'day'
-            tooltipFormat: 'll HH:mm'
-          },
-          scaleLabel: {
-            display: true,
-            labelString: 'Date'
-          }
-        }],
-        yAxes: [{
-          scaleLabel: {
-            display: true,
-            labelString: 'value'
-          }
-        }]
-      },
+    legend: {
+      display: false
+    },
+    tooltips: {
+      backgroundColor: "rgb(255,255,255)",
+      bodyFontColor: "#858796",
+      titleMarginBottom: 10,
+      titleFontColor: '#6e707e',
+      titleFontSize: 14,
+      borderColor: '#dddfeb',
+      borderWidth: 1,
+      xPadding: 15,
+      yPadding: 15,
+      displayColors: false,
+      intersect: false,
+      mode: 'index',
+      caretPadding: 10
     }
-  };
-
-  var ctx = document.getElementById("myAreaChart");
-  var myLineChart = new Chart(ctx, config); 
-};
+  }
+});
 
 
-function updateChart(probeData) {
-  
-  //var probeDataString = document.getElementById("probeData").innerHTML;
-  //var probeData = JSON.parse(probeDataString);
+////////////////////////
+
+function probeSelector(alias) {
+
+  var probeList = JSON.parse(document.getElementById("probeList").innerHTML);
+  probeData = probeList[alias]; 
+
+  document.getElementById("charTitle").innerHTML   = probeData.title;
+  document.getElementById("charComment").innerHTML = probeData.description;
+
 
   requestParam = { "probe": probeData.probe,
                    "param": probeData.param,
                    "hours": 48
-                 }
+  }
 
   $.ajax({
     dataType: "json",
     url: "v1/getHistogram",
     data: requestParam,
-    success: function(data) {
-      //document.getElementById("charData").innerHTML = JSON.stringify(data);
-      data.title = probeData.title;
-      data.description = probeData.description;
-      data.param = probeData.param;
-      drawChart(data);
-    }
-  });
+    success: function(result) {
 
-};
+      myData = [];
+      result.data.forEach(function(element) {
+        myData.push( {"x":element.date, "y": element[probeData.param]} );
+      });
+    
+      myLineChart.data.datasets[0].label = probeData.param;
+      myLineChart.data.datasets[0].data = myData;
 
-probeList = {
-  "romeroBatt" : {
-    "probe": "ESP807D3AF077C8.A9",
-    "alias": "romeroBatt",
-    "title": "Romero",
-    "description": "Lolin D32 - 3.7Volt",
-    "param": "batt"
-  },
-  "kentiaBatt" : {
-    "probe": "ESP807D3AF077C8.A9",
-    "alias": "kentiaBatt",
-    "title": "Kentia",
-    "description": "Lolin D32 - 3.7Volt",
-    "param": "batt"
-  },
-  "balconTemp" : {
-    "probe": "b827eb.61eb84.c2",
-    "alias": "balconTemp",
-    "title": "28039 - Outdoor Temp",
-    "description": "Oregon Scientific",
-    "param": "temp"
-  },
-  "bedroomTemp" : {
-    "probe": "b827eb.61eb84.c3",
-    "alias": "bedroomTemp",
-    "title": "28039 - Bedroom",
-    "description": "Oregon Scientific",
-    "param": "temp"
-  },
-  "siguenzaTemp" : {
-    "probe": "b827eb.300520.c3",
-    "alias": "siguenzaTemp",
-    "title": "19250 - Out Temp",
-    "description": "Oregon Scientific",
-    "param": "temp"
-  }
-};
 
-function probeSelector(alias) {
-  probeData = probeList[alias]; 
-  updateChart(probeData);
+      myLineChart.update();
+      }
+    });
+
 };
