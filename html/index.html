@@ -97,6 +97,26 @@
 
       <!-- Nav Item - Probes batt Collapse Menu -->
       <li class="nav-item">
+        <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#plants" aria-expanded="true" aria-controls="plants">
+          <i class="fas fa-fw fa-wrench"></i>
+          <span>Plants</span>
+        </a>
+        <div id="plants" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
+          <div class="bg-white py-2 collapse-inner rounded">
+            <h6 class="collapse-header">Balcon</h6>
+            <div class="collapse-item" onclick="probeSelector('romero')">Romero</div>
+            <div class="collapse-item" onclick="probeSelector('lavanda')">Lavanda</div>
+            <h6 class="collapse-header">Living room</h6>
+            <div class="collapse-item" onclick="probeSelector('aloevera')">Aloe Vera</div>
+            <div class="collapse-item" onclick="probeSelector('camilla')">Camilla</div>
+          </div>
+        </div>
+      </li>
+
+
+
+      <!-- Nav Item - Probes batt Collapse Menu -->
+      <li class="nav-item">
           <a class="nav-link collapsed" href="#" data-toggle="collapse" data-target="#probesBatt" aria-expanded="true" aria-controls="probesBatt">
             <i class="fas fa-fw fa-wrench"></i>
             <span>Probes Batt</span>
@@ -106,7 +126,6 @@
               <h6 class="collapse-header">Balcon</h6>
               <div class="collapse-item" onclick="probeSelector('romeroBatt')">Romero</div>
               <div class="collapse-item" onclick="probeSelector('laurelBatt')">Laurel</div>
-              <div class="collapse-divider"></div>
               <h6 class="collapse-header">Living room</h6>
               <div class="collapse-item" onclick="probeSelector('kentiaBatt')">Kentia</div>
             </div>
@@ -125,6 +144,7 @@
               <div class="collapse-item" onclick="probeSelector('balconTemp')">Balcon Temp</div>
               <div class="collapse-item" onclick="probeSelector('balconHumidity')">Balcon Humidity</div>
               <h6 class="collapse-header">Indoor</h6>
+              <div class="collapse-item" onclick="probeSelector('livingroomTemp')">Livin Room Temp</div>
               <div class="collapse-item" onclick="probeSelector('bedroomTemp')">Bedroom Temp</div>
               <div class="collapse-item" onclick="probeSelector('bedroomHumidity')">Bedroom Humidity</div>
               <h6 class="collapse-header">Siguenza</h6>
@@ -310,14 +330,14 @@
       "probe": "ESP807D3AF077C8.A9",
       "alias": "romeroBatt",
       "title": "Romero",
-      "description": "Lolin D32 - 3.7Volt",
+      "description": "Lolin D32 - Efest 3.7Volt",
       "param": "batt"
     },
-    "kentiaBatt" : {
-      "probe": "ESP807D3AF077C8.A9",
-      "alias": "kentiaBatt",
-      "title": "Kentia",
-      "description": "Lolin D32 - 3.7Volt",
+    "laurelBatt" : {
+      "probe": "ESP240AC4A3CE98.A9",
+      "alias": "laurelBatt",
+      "title": "Laurel",
+      "description": "Lolin D32 - Efest 3.7Volt",
       "param": "batt"
     },
     "balconTemp" : {
@@ -333,6 +353,13 @@
       "title": "28039 - Outdoor Temp",
       "description": "Oregon Scientific",
       "param": "humidity"
+    },
+    "livingroomTemp" : {
+      "probe": "28-041651bfbaff",
+      "alias": "livingroomTemp",
+      "title": "28039 - Living Room",
+      "description": "DS1820",
+      "param": "temp"
     },
     "bedroomTemp" : {
       "probe": "b827eb.61eb84.c3",
@@ -361,6 +388,20 @@
       "title": "19250 - Out Temp",
       "description": "Oregon Scientific",
       "param": "humidity"
+    },
+    "aloevera" : {
+      "probe": "ESP3C71BF4D0890.A0",
+      "alias": "aloevera",
+      "title": "Aloe Vera",
+      "description": "Lolin32 - Capacitive sensor v1.2",
+      "param": "mois"
+    },
+    "camilla" : {
+      "probe": "ESP3C71BF4D0890.A1",
+      "alias": "camilla",
+      "title": "Camilla",
+      "description": "Lolin32 - Capacitive sensor v1.2",
+      "param": "mois"
     }
   }
   </div>  
