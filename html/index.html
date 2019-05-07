@@ -104,8 +104,9 @@
         <div id="plants" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
           <div class="bg-white py-2 collapse-inner rounded">
             <h6 class="collapse-header">Balcon</h6>
-            <div class="collapse-item" onclick="probeSelector('romero')">Romero</div>
-            <div class="collapse-item" onclick="probeSelector('lavanda')">Lavanda</div>
+            <div class="collapse-item" onclick="probeSelector('poto1')">Poto 1</div>
+            <div class="collapse-item" onclick="probeSelector('poto2')">Poto 2</div>
+            <div class="collapse-item" onclick="probeSelector('troncobrasil')">Tronco del Brasil</div>
             <h6 class="collapse-header">Living room</h6>
             <div class="collapse-item" onclick="probeSelector('aloevera')">Aloe Vera</div>
             <div class="collapse-item" onclick="probeSelector('camilla')">Camilla</div>
@@ -123,11 +124,9 @@
           </a>
           <div id="probesBatt" class="collapse" aria-labelledby="headingPages" data-parent="#accordionSidebar">
             <div class="bg-white py-2 collapse-inner rounded">
-              <h6 class="collapse-header">Balcon</h6>
-              <div class="collapse-item" onclick="probeSelector('romeroBatt')">Romero</div>
-              <div class="collapse-item" onclick="probeSelector('laurelBatt')">Laurel</div>
               <h6 class="collapse-header">Living room</h6>
-              <div class="collapse-item" onclick="probeSelector('kentiaBatt')">Kentia</div>
+              <div class="collapse-item" onclick="probeSelector('potoBatt')">Poto</div>
+              <div class="collapse-item" onclick="probeSelector('troncobrasilBatt')">Tronco del Brasil</div>
             </div>
           </div>
         </li>
@@ -326,17 +325,17 @@
 
   <div id="probeList" class="stuff" style="display:none">
   {
-    "romeroBatt" : {
+    "troncobrasilBatt" : {
       "probe": "ESP807D3AF077C8.A9",
-      "alias": "romeroBatt",
-      "title": "Romero",
+      "alias": "troncobrasilBatt",
+      "title": "Tronco del Brasil",
       "description": "Lolin D32 - Efest 3.7Volt",
       "param": "batt"
     },
-    "laurelBatt" : {
+    "potoBatt" : {
       "probe": "ESP240AC4A3CE98.A9",
-      "alias": "laurelBatt",
-      "title": "Laurel",
+      "alias": "potoBatt",
+      "title": "Poto",
       "description": "Lolin D32 - Efest 3.7Volt",
       "param": "batt"
     },
@@ -402,7 +401,30 @@
       "title": "Camilla",
       "description": "Lolin32 - Capacitive sensor v1.2",
       "param": "mois"
+    },
+    "poto1" : {
+      "probe": "ESP240AC4A3CE98.A0",
+      "alias": "poto1",
+      "title": "Poto 1",
+      "description": "Lolin32 - Capacitive sensor v1.2",
+      "param": "mois"
+    },
+    "poto2" : {
+      "probe": "ESP240AC4A3CE98.A1",
+      "alias": "poto2",
+      "title": "Poto 2",
+      "description": "Lolin32 - Capacitive sensor v1.2",
+      "param": "mois"
+    },
+    "troncobrasil" : {
+      "probe": "ESP807D3AF077C8.A0",
+      "alias": "troncobrasil",
+      "title": "Tronco del Brasil",
+      "description": "Lolin32 - Capacitive sensor v1.2",
+      "param": "mois"
     }
+
+
   }
   </div>  
 
