@@ -74,8 +74,8 @@ def getMaxMin(probe="b827eb.300520.c3",hours=48,param="temp"):
     #print(response[u'Items'])
     #print("-------------------------------------")
 
-    maxItem = { "value": None}
-    minItem = { "value": None}
+    maxItem = { param: None}
+    minItem = { param: None}
 
     for i in response[u'Items']:
         #print(json.dumps(i, cls=DecimalEncoder))
@@ -91,13 +91,11 @@ def getMaxMin(probe="b827eb.300520.c3",hours=48,param="temp"):
             
             item[param]=value
 
-            if (maxItem["value"] is None or value > maxItem["value"]):
+            if (maxItem[param] is None or value > maxItem[param]):
                 maxItem = item
-                maxItem["value"] = value
 
-            if (minItem["value"] is None or value < minItem["value"]):
+            if (minItem[param] is None or value < minItem[param]):
                 minItem = item
-                minItem["value"] = value
 
 
 
