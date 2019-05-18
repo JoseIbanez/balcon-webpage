@@ -8,11 +8,12 @@ import getMaxMin
 
 
 def main():
-    print("Test Case 1")
-    out=getMaxMin.getMaxMin()
+    print("Test Case 1, 19250 - Siguenza")
+    out=getMaxMin.getMaxMin(probe="b827eb.300520.c3",hours=24,param="temp")
+    print(out)
 
-    print("Test Case 2")
-    out=getMaxMin.getMaxMin(probe="ESP807D3AF077C8.A9",hours=24,param="batt")
+    print("Test Case 2, 28039 - Balcon")
+    out=getMaxMin.getMaxMin(probe="b827eb.61eb84.c2",hours=24,param="temp")
     print(out)
 
 
